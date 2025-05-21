@@ -10,38 +10,69 @@ public class ListManagerTest {
     ListManager manager;
     List<Integer> list;
 
-    public ListManagerTest() {
-    }
-
     @BeforeEach
     void setUp() {
         this.manager = new ListManager();
-        this.list = new ArrayList();
+        this.list = new ArrayList<>();
     }
+
+    // Positive test cases
 
     @Test
     void testAddElement() {
-        this.manager.addElement(this.list, 5);
-        this.manager.addElement(this.list, 10);
-        Assertions.assertTrue(this.list.contains(5));
-        Assertions.assertTrue(this.list.contains(10));
-        Assertions.assertEquals(2, this.manager.getSize(this.list));
+        manager.addElement(list, 5);
+        manager.addElement(list, 10);
+        Assertions.assertTrue(list.contains(5));
+        Assertions.assertTrue(list.contains(10));
+        Assertions.assertEquals(2, manager.getSize(list));
     }
 
     @Test
     void testRemoveElement() {
-        this.list.add(1);
-        this.list.add(2);
-        this.list.add(3);
-        this.manager.removeElement(this.list, 2);
-        Assertions.assertFalse(this.list.contains(2));
-        Assertions.assertEquals(2, this.manager.getSize(this.list));
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        manager.removeElement(list, 2);
+        Assertions.assertFalse(list.contains(2));
+        Assertions.assertEquals(2, manager.getSize(list));
     }
 
     @Test
     void testGetSize() {
-        Assertions.assertEquals(0, this.manager.getSize(this.list));
-        this.list.add(100);
-        Assertions.assertEquals(1, this.manager.getSize(this.list));
+        Assertions.assertEquals(0, manager.getSize(list));
+        list.add(100);
+        Assertions.assertEquals(1, manager.getSize(list));
+    }
+
+    // Negative test cases
+
+    @Test
+    void testRemoveElementNotInList() {
+        list.add(1);
+        list.add(3);
+        manager.removeElement(list, 2);  // 2 is not in list
+        Assertions.assertEquals(2, manager.getSize(list));
+        Assertions.assertFalse(list.contains(2));
+    }
+
+    @Test
+    void testAddElementNullList() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            manager.addElement(null, 5);
+        });
+    }
+
+    @Test
+    void testRemoveElementNullList() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            manager.removeElement(null, 5);
+        });
+    }
+
+    @Test
+    void testGetSizeNullList() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            manager.getSize(null);
+        });
     }
 }
